@@ -3,7 +3,6 @@ import * as vscode from "vscode";
 import * as xclip from "xclip";
 import { toMarkdown } from "./toMarkdown";
 import { Predefine } from "./predefine";
-import { AIPaster } from "./ai_paster";
 import {
   prepareDirForFile,
   fetchAndSaveFile,
@@ -35,18 +34,6 @@ class Paster {
       let lang = await ld.detectLanguage(content);
       Paster.writeToEditor(`\`\`\`${lang}\n${content}\n\`\`\``);
     }
-  }
-
-  static async parseByAI(content: string) {
-    if (Paster.config.enableAI) {
-      const p = new AIPaster();
-      const result = await p.callAI(content);
-      if (result.status == "success") {
-        await Paster.writeToEditor(result.message);
-        return;
-      }
-    }
-    Paster.writeToEditor(content);
   }
 
   static async selectClipboardType(
@@ -99,12 +86,12 @@ class Paster {
           if (enableRulesForHtml) {
             markdown = Paster.parse(markdown);
           }
-          await Paster.parseByAI(markdown);
+          Paster.writeToEditor(markdown);
         } else {
           const text = await cb.getTextPlain();
           if (text) {
             let newContent = Paster.parse(text);
-            await Paster.parseByAI(newContent);
+            Paster.writeToEditor(newContent);
           }
         }
         break;
@@ -112,7 +99,7 @@ class Paster {
         const text = await cb.getTextPlain();
         if (text) {
           let newContent = Paster.parse(text);
-          await Paster.parseByAI(newContent);
+          Paster.writeToEditor(newContent);
         }
         break;
       case xclip.ClipboardType.Image:
