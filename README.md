@@ -57,10 +57,6 @@ Smartly paste for Markdown.
 
   ![](res/images/insert_embed_base64_image.gif)
 
-- AI Parse Clipboard
-
-  Use LLM AI to parse `text` or `HTML` clipboard content. You can also customize the AI clipboard parsing behavior to better suit different use cases by using the AI configurations
-
 ## Config
 
 - Predefined variables
@@ -247,59 +243,6 @@ Smartly paste for Markdown.
   ```json
   ["image", "html", "text"]
   ```
-
-- `MarkdownPaste.enableAI`
-
-  Enable AI clipboard parsing feature. default is `false`.
-
-- `MarkdownPaste.openaiConnectOption`
-
-  Set OpenAI (compatible) connection options. default is:
-
-  ```json
-  "MarkdownPaste.openaiConnectOption": {
-      "apiKey": "",
-      "baseURL": "https://api.groq.com/openai/v1",
-      "maxRetries": 2
-  }
-  ```
-
-  The extension use Groq LLM server by default. You can got an API key from [Groq.com](https://groq.com/).  
-  The extension use [OpenAi Node](https://github.com/openai/openai-node) to connect LLM server. So you can also use another LLM server by setting `MarkdownPaste.openaiConnectOption.baseURL`, e.g. `MarkdownPaste.openaiConnectOption.baseURL = "https://api.openai.com/v1"`, the more detail about openai connection options, please see: https://github.com/openai/openai-node
-
-- `MarkdownPaste.openaiCompletionTemplate`
-
-  Set OpenAI completion template. default is:
-
-  ```json
-  [
-    {
-      "model": "llama-3.1-70b-versatile",
-      "messages": [
-        {
-          "role": "system",
-          "content": ["You are a helpful assistant."]
-        },
-        {
-          "role": "user",
-          "content": [
-            "Translate the following text into English and output in markdown format:",
-            "{{clipboard_text}}"
-          ]
-        }
-      ],
-      "max_tokens": 4096
-    }
-  ]
-  ```
-
-  Note: The extension will replace `{{clipboard_text}}` with your clipboard content.
-
-- `MarkdownPaste.openaiCompletionTemplateFile`
-
-  Set OpenAI completion template file. default is: `${fileWorkspaceFolder}/.openaiCompletionTemplate.json`
-
-  If you want to write more complicated AI completion template, you can use this option.
 
 - **`MarkdownPaste.imageRules`**  
   **(New Feature)** Define custom rules to modify the target image path and Markdown link pattern based on the current Markdown file's path. Each rule is an object with the following properties:
